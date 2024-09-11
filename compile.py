@@ -7,10 +7,8 @@ XRAY_API_PATH = os.path.join(CURRENT_DIRECTORY, 'xray_api')
 DIST_PATH = os.path.join(CURRENT_DIRECTORY, 'dist')
 
 PYTHON_OUTPUT_PATH = os.path.join(DIST_PATH, "python")
-CPP_OUTPUT_PATH = os.path.join(DIST_PATH, "cpp")
-CSHARP_OUTPUT_PATH = os.path.join(DIST_PATH, "csharp")
-RUBY_OUTPUT_PATH = os.path.join(DIST_PATH, "ruby")
-NODEJS_OUTPUT_PATH = os.path.join(DIST_PATH, "nodejs")
+PHP_OUTPUT_PATH = os.path.join(DIST_PATH, "php")
+JAVA_OUTPUT_PATH = os.path.join(DIST_PATH, "java")
 
 
 def find_proto_files():
@@ -33,40 +31,22 @@ if compiler == "python":
         f"--grpc_python_out={PYTHON_OUTPUT_PATH} "
         f"{' '.join(proto_files)}"
     )
-elif compiler == "cpp":
+elif compiler == "php":
     command = (
         f"protoc "
         f"--proto_path={XRAY_API_PATH} "
-        f"--cpp_out={CPP_OUTPUT_PATH} "
-        f"--grpc_out={CPP_OUTPUT_PATH} "
-        "--plugin=protoc-gen-grpc=$(which grpc_cpp_plugin) "
+        f"--php_out={PHP_OUTPUT_PATH} "
+        f"--grpc_out={PHP_OUTPUT_PATH} "
+        "--plugin=protoc-gen-grpc=$(which grpc_php_plugin) "
         f"{' '.join(proto_files)}"
     )
-elif compiler == "csharp":
+elif compiler == "java":
     command = (
         f"protoc "
         f"--proto_path={XRAY_API_PATH} "
-        f"--csharp_out={CSHARP_OUTPUT_PATH} "
-        f"--grpc_out={CSHARP_OUTPUT_PATH} "
-        "--plugin=protoc-gen-grpc=$(which grpc_csharp_plugin) "
-        f"{' '.join(proto_files)}"
-    )
-elif compiler == "ruby":
-    command = (
-        f"protoc "
-        f"--proto_path={XRAY_API_PATH} "
-        f"--ruby_out={RUBY_OUTPUT_PATH} "
-        f"--grpc_out={RUBY_OUTPUT_PATH} "
-        "--plugin=protoc-gen-grpc=$(which grpc_ruby_plugin) "
-        f"{' '.join(proto_files)}"
-    )
-elif compiler == "nodejs":
-    command = (
-        f"protoc "
-        f"--proto_path={XRAY_API_PATH} "
-        f"--js_out={RUBY_OUTPUT_PATH} "
-        f"--grpc_out={RUBY_OUTPUT_PATH} "
-        "--plugin=protoc-gen-grpc=$(which grpc_node_plugin) "
+        f"--java_out={JAVA_OUTPUT_PATH} "
+        f"--grpc_out={JAVA_OUTPUT_PATH} "
+        "--plugin=protoc-gen-grpc-java=$(which protoc-gen-grpc-java) "
         f"{' '.join(proto_files)}"
     )
 else:
