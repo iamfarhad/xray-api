@@ -8,45 +8,30 @@ on:
         type: boolean
         description: 'python compiling'
         
-      compile_cpp:
+      compile_php:
         required: true
         type: boolean
-        description: 'cpp compiling'
-      compile_csharp:
+        description: 'php compiling'
+        
+      compile_java:
         required: true
         type: boolean
-        description: 'c# compiling'
-      compile_ruby:
-        required: true
-        type: boolean
-        description: 'ruby compiling'
-      compile_nodejs:
-        required: true
-        type: boolean
-        description: 'nodejs compiling'
+        description: 'java compiling'
         
       commit_python:
         required: true
         type: boolean
         description: 'python committing'
         
-      commit_cpp:
+      commit_php:
         required: true
         type: boolean
-        description: 'cpp committing'
+        description: 'php committing'
         
-      commit_csharp:
+      commit_java:
         required: true
         type: boolean
-        description: 'c# committing'
-      commit_ruby:
-        required: true
-        type: boolean
-        description: 'ruby committing'
-      commit_nodejs:
-        required: true
-        type: boolean
-        description: 'nodejs committing'
+        description: 'java committing'
 
 jobs:
   Python:
@@ -73,7 +58,6 @@ jobs:
         run: |
           pip install grpcio grpcio-tools
 
-
       - name: Compile
         run: |
           python compile.py python
@@ -83,7 +67,7 @@ jobs:
           tree
 
       - name: Commit and Push Changes
-        if:  ${{ github.event.inputs.commit_python == 'true' }}
+        if: ${{ github.event.inputs.commit_python == 'true' }}
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
@@ -91,153 +75,14 @@ jobs:
           git commit -m "compile: proto files compiled"
           git push
 
-  Cpp:
-    if: ${{ github.event.inputs.compile_cpp == 'true' }}
-    name: Compile proto files to c++ source
+  Php:
+    if: ${{ github.event.inputs.compile_php == 'true' }}
+    name: Compile proto files to php source
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Setup python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
-
-
-      - name:  Install Pre-requisites
-        run: |
-          cd $HOME
-          mkdir grpc
-          cd grpc
-          wget https://github.com/XVGuardian/grpc-compiled/releases/download/v1.61.0/local_directory.zip
-          unzip local_directory.zip
-          tree .local
-          export PATH="$HOME/grpc/.local/bin:$PATH"
-
-      - name: Compile
-        run: |
-          export PATH="$HOME/grpc/.local/bin:$PATH"
-          python compile.py cpp
-          
-
-      - name: Tree
-        run: |
-          tree
-
-      - name: Commit and Push Changes
-        if: ${{ github.event.inputs.commit_cpp == 'true' }}
-        run: |
-          git config --local user.email "actions@github.com"
-          git config --local user.name "GitHub Actions"
-          git pull
-          git add .
-          git commit -m "compile: proto files compiled"
-          git push
-
-
-  Csharp:
-    if: ${{ github.event.inputs.compile_csharp == 'true' }}
-    name: Compile proto files to csharp source
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
-
-      - name:  Install Pre-requisites
-        run: |
-          cd $HOME
-          mkdir grpc
-          cd grpc
-          wget https://github.com/XVGuardian/grpc-compiled/releases/download/v1.61.0/local_directory.zip
-          unzip local_directory.zip
-          tree .local
-          export PATH="$HOME/grpc/.local/bin:$PATH"
-
-      - name: Compile
-        run: |
-          export PATH="$HOME/grpc/.local/bin:$PATH"
-          python compile.py csharp
-
-      - name: Tree
-        run: |
-          tree
-
-      - name: Commit and Push Changes
-        if:  ${{ github.event.inputs.commit_csharp == 'true' }}
-        run: |
-          git config --local user.email "actions@github.com"
-          git config --local user.name "GitHub Actions"
-          git add .
-          git commit -m "compile: proto files compiled"
-          git push
-
-  Ruby:
-    if: ${{ github.event.inputs.compile_ruby == 'true' }}
-    name: Compile proto files to ruby source
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
-
-
-
-      - name:  Install Pre-requisites
-        run: |
-          cd $HOME
-          mkdir grpc
-          cd grpc
-          wget https://github.com/XVGuardian/grpc-compiled/releases/download/v1.61.0/local_directory.zip
-          unzip local_directory.zip
-          tree .local
-          export PATH="$HOME/grpc/.local/bin:$PATH"
-
-      - name: Compile
-        run: |
-          export PATH="$HOME/grpc/.local/bin:$PATH"
-          python compile.py ruby
-          
-
-      - name: Tree
-        run: |
-          tree
-
-      - name: Commit and Push Changes
-        if: ${{ github.event.inputs.commit_ruby == 'true' }}
-        run: |
-          git config --local user.email "actions@github.com"
-          git config --local user.name "GitHub Actions"
-          git pull
-          git add .
-          git commit -m "compile: proto files compiled"
-          git push  
-
-  Nodejs:
-    if: ${{ github.event.inputs.compile_nodejs == 'true' }}
-    name: Compile proto files to nodejs source
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
 
       - name: Setup protoc
         uses: arduino/setup-protoc@v3
@@ -245,38 +90,48 @@ jobs:
           version: "25.3"
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 'latest'
-
-      - name: Install dependencies
-        run: |
-          npm install grpc-tools grpc
-
-
-      - name:  Install Pre-requisites
-        run: |
-          cd $HOME
-          mkdir grpc
-          cd grpc
-          wget https://github.com/XVGuardian/grpc-compiled/releases/download/v1.61.0/local_directory.zip
-          unzip local_directory.zip
-          tree .local
-          export PATH="$HOME/grpc/.local/bin:$PATH"
-
       - name: Compile
         run: |
-          export PATH="$HOME/grpc/.local/bin:$PATH"
-          python compile.py nodejs
-          
+          protoc --proto_path=xray_api --php_out=dist/php --grpc_out=dist/php --plugin=protoc-gen-grpc=$(which grpc_php_plugin) $(find xray_api -name '*.proto')
 
       - name: Tree
         run: |
           tree
 
       - name: Commit and Push Changes
-        if: ${{ github.event.inputs.commit_nodejs == 'true' }}
+        if: ${{ github.event.inputs.commit_php == 'true' }}
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add .
+          git commit -m "compile: proto files compiled"
+          git push
+
+  Java:
+    if: ${{ github.event.inputs.compile_java == 'true' }}
+    name: Compile proto files to java source
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup protoc
+        uses: arduino/setup-protoc@v3
+        with:
+          version: "25.3"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Compile
+        run: |
+          protoc --proto_path=xray_api --java_out=dist/java --grpc_out=dist/java --plugin=protoc-gen-grpc-java=$(which protoc-gen-grpc-java) $(find xray_api -name '*.proto')
+
+      - name: Tree
+        run: |
+          tree
+
+      - name: Commit and Push Changes
+        if: ${{ github.event.inputs.commit_java == 'true' }}
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
