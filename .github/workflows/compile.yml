@@ -84,6 +84,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Install PHP gRPC plugin
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y php php-pear php-dev
+          sudo pecl install grpc
+
+      - name: Install composer
+        run: |
+          curl -sS https://getcomposer.org/installer | php
+          sudo mv composer.phar /usr/local/bin/composer
+
+      - name: Install PHP dependencies (grpc_php_plugin)
+        run: |
+          composer require grpc/grpc
+
       - name: Setup protoc
         uses: arduino/setup-protoc@v3
         with:
@@ -92,7 +107,7 @@ jobs:
 
       - name: Compile
         run: |
-          protoc --proto_path=xray_api --php_out=dist/php --grpc_out=dist/php --plugin=protoc-gen-grpc=$(which grpc_php_plugin) $(find xray_api -name '*.proto')
+          python compile.py php
 
       - name: Tree
         run: |
@@ -116,6 +131,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Install Java
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openjdk-11-jdk maven
+
+      - name: Install gRPC Java plugin
+        run: |
+          sudo apt-get install -y protobuf-compiler-grpc-java
+
       - name: Setup protoc
         uses: arduino/setup-protoc@v3
         with:
@@ -124,7 +148,7 @@ jobs:
 
       - name: Compile
         run: |
-          protoc --proto_path=xray_api --java_out=dist/java --grpc_out=dist/java --plugin=protoc-gen-grpc-java=$(which protoc-gen-grpc-java) $(find xray_api -name '*.proto')
+          python compile.py java
 
       - name: Tree
         run: |
