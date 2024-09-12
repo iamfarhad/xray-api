@@ -48,11 +48,13 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Setup protoc
-        uses: arduino/setup-protoc@v3
-        with:
-          version: "25.3"
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install protoc
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y unzip
+          curl -OL https://github.com/protocolbuffers/protobuf/releases/download/v25.3/protoc-25.3-linux-x86_64.zip
+          unzip protoc-25.3-linux-x86_64.zip -d $HOME/protoc
+          export PATH="$HOME/protoc/bin:$PATH"
 
       - name: Install dependencies
         run: |
@@ -99,11 +101,13 @@ jobs:
         run: |
           composer require grpc/grpc
 
-      - name: Setup protoc
-        uses: arduino/setup-protoc@v3
-        with:
-          version: "25.3"
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install protoc
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y unzip
+          curl -OL https://github.com/protocolbuffers/protobuf/releases/download/v25.3/protoc-25.3-linux-x86_64.zip
+          unzip protoc-25.3-linux-x86_64.zip -d $HOME/protoc
+          export PATH="$HOME/protoc/bin:$PATH"
 
       - name: Compile
         run: |
@@ -131,10 +135,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Java
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y openjdk-11-jdk maven
+      - name: Install Amazon Corretto 21
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'corretto'
+          java-version: '21'
 
       - name: Setup Maven project
         run: |
@@ -164,7 +169,14 @@ jobs:
           echo '            <groupId>com.google.protobuf</groupId>' >> pom.xml
           echo '            <artifactId>protobuf-java</artifactId>' >> pom.xml
           echo '            <version>3.15.8</version>' >> pom.xml
-          echo '        </dependency>' >> pom.xml
+
+      - name: Install protoc
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y unzip
+          curl -OL https://github.com/protocolbuffers/protobuf/releases/download/v25.3/protoc-25.3-linux-x86_64.zip
+          unzip protoc-25.3-linux-x86_64.zip -d $HOME/protoc
+          export PATH="$HOME/protoc/bin:$PATH"
 
       - name: Compile
         run: |
