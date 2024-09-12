@@ -136,15 +136,35 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y openjdk-11-jdk maven
 
-      - name: Install gRPC Java plugin
+      - name: Setup Maven project
         run: |
-          sudo apt-get install -y protobuf-compiler-grpc-java
+          mkdir -p grpc-java-project
+          cd grpc-java-project
+          mvn archetype:generate -DgroupId=com.example.grpc -DartifactId=grpc-java -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
 
-      - name: Setup protoc
-        uses: arduino/setup-protoc@v3
-        with:
-          version: "25.3"
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Add gRPC Java dependencies to Maven
+        run: |
+          cd grpc-java-project
+          echo '        <dependency>' >> pom.xml
+          echo '            <groupId>io.grpc</groupId>' >> pom.xml
+          echo '            <artifactId>grpc-netty-shaded</artifactId>' >> pom.xml
+          echo '            <version>1.39.0</version>' >> pom.xml
+          echo '        </dependency>' >> pom.xml
+          echo '        <dependency>' >> pom.xml
+          echo '            <groupId>io.grpc</groupId>' >> pom.xml
+          echo '            <artifactId>grpc-protobuf</artifactId>' >> pom.xml
+          echo '            <version>1.39.0</version>' >> pom.xml
+          echo '        </dependency>' >> pom.xml
+          echo '        <dependency>' >> pom.xml
+          echo '            <groupId>io.grpc</groupId>' >> pom.xml
+          echo '            <artifactId>grpc-stub</artifactId>' >> pom.xml
+          echo '            <version>1.39.0</version>' >> pom.xml
+          echo '        </dependency>' >> pom.xml
+          echo '        <dependency>' >> pom.xml
+          echo '            <groupId>com.google.protobuf</groupId>' >> pom.xml
+          echo '            <artifactId>protobuf-java</artifactId>' >> pom.xml
+          echo '            <version>3.15.8</version>' >> pom.xml
+          echo '        </dependency>' >> pom.xml
 
       - name: Compile
         run: |
