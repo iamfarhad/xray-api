@@ -159,47 +159,6 @@ jobs:
           distribution: 'corretto'
           java-version: '21'
 
-      - name: Setup Maven project
-        run: |
-          mkdir -p grpc-java-project
-          cd grpc-java-project
-          mvn archetype:generate -DgroupId=com.example.grpc -DartifactId=grpc-java -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
-
-      - name: Validate initial POM file is correct
-        run: |
-          cd grpc-java-project
-          cat pom.xml
-
-      - name: Add gRPC Java dependencies to the pom.xml
-        run: |
-          cd grpc-java-project
-          sed -i '/<\/dependencies>/i \
-            \ \ \ \ <dependency>\n\
-            \ \ \ \ \ \ <groupId>io.grpc</groupId>\n\
-            \ \ \ \ \ \ <artifactId>grpc-netty-shaded</artifactId>\n\
-            \ \ \ \ \ \ <version>1.39.0</version>\n\
-            \ \ \ \ </dependency>\n\
-            \ \ \ \ <dependency>\n\
-            \ \ \ \ \ \ <groupId>io.grpc</groupId>\n\
-            \ \ \ \ \ \ <artifactId>grpc-protobuf</artifactId>\n\
-            \ \ \ \ \ \ <version>1.39.0</version>\n\
-            \ \ \ \ </dependency>\n\
-            \ \ \ \ <dependency>\n\
-            \ \ \ \ \ \ <groupId>io.grpc</groupId>\n\
-            \ \ \ \ \ \ <artifactId>grpc-stub</artifactId>\n\
-            \ \ \ \ \ \ <version>1.39.0</version>\n\
-            \ \ \ \ </dependency>\n\
-            \ \ \ \ <dependency>\n\
-            \ \ \ \ \ \ <groupId>com.google.protobuf</groupId>\n\
-            \ \ \ \ \ \ <artifactId>protobuf-java</artifactId>\n\
-            \ \ \ \ \ \ <version>3.15.8</version>\n\
-            \ \ \ \ </dependency>' pom.xml
-
-      - name: Validate updated POM file
-        run: |
-          cd grpc-java-project
-          cat pom.xml
-
       - name: Install protoc
         run: |
           sudo apt-get update
@@ -207,6 +166,9 @@ jobs:
           curl -OL https://github.com/protocolbuffers/protobuf/releases/download/v25.3/protoc-25.3-linux-x86_64.zip
           unzip protoc-25.3-linux-x86_64.zip -d $HOME/protoc
           export PATH="$HOME/protoc/bin:$PATH"
+          wget https://repo1.maven.org/maven2/io/grpc/protoc-gen-grpc-java/1.9.1/protoc-gen-grpc-java-1.9.1-osx-x86_64.exe
+          chmod +x protoc-gen-grpc-java-1.9.1-linux-x86_64.exe
+          mv protoc-gen-grpc-java-1.9.1-linux-x86_64.exe /usr/local/bin/protoc-gen-grpc-java
 
       - name:  Install Pre-requisites
         run: |
@@ -220,7 +182,6 @@ jobs:
 
       - name: Compile
         run: |
-          export PATH="$HOME/grpc/.local/bin:$PATH"
           python compile.py java
 
       - name: Tree
