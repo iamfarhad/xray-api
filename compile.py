@@ -43,6 +43,7 @@ elif compiler == "php":
 elif compiler == "java":
     command = (
         f"protoc "
+        f"--proto_path={XRAY_API_PATH} "
         f"--java_out={JAVA_OUTPUT_PATH} "
         f"--grpc_out={JAVA_OUTPUT_PATH} "
         f"{' '.join(proto_files)}"
