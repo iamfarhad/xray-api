@@ -89,7 +89,7 @@ jobs:
       - name: Install PHP gRPC plugin
         run: |
           sudo apt-get update
-          sudo apt-get install -y php php-pear php-dev
+          sudo apt-get install -y php php-pear
           sudo pecl install grpc
 
       - name: Install composer
