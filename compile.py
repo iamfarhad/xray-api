@@ -45,7 +45,7 @@ elif compiler == "java":
         f"protoc "
         f"--proto_path={XRAY_API_PATH} "
         f"--java_out={JAVA_OUTPUT_PATH} "
-        f"--grpc_out={JAVA_OUTPUT_PATH} "
+        f"--grpc-java_out={JAVA_OUTPUT_PATH} "
         f"{' '.join(proto_files)}"
     )
 else:
