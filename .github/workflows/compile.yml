@@ -159,6 +159,11 @@ jobs:
           distribution: 'corretto'
           java-version: '21'
 
+
+      - name: Install gRPC plugin
+        run: |
+          sudo apt install -y protobuf-compiler
+
       - name: Install protoc
         run: |
           cd $HOME
@@ -169,7 +174,7 @@ jobs:
           elif [[ "$RUNNER_OS" == "Windows" ]]; then
             OS="windows"
           fi
-          apt install -y protobuf-compiler
+          
           wget https://repo1.maven.org/maven2/io/grpc/protoc-gen-grpc-java/1.9.1/protoc-gen-grpc-java-1.9.1-${OS}-x86_64.exe
           chmod +x protoc-gen-grpc-java-1.9.1-${OS}-x86_64.exe
           sudo mv protoc-gen-grpc-java-1.9.1-${OS}-x86_64.exe /usr/local/bin/protoc-gen-grpc-java
