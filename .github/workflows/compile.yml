@@ -180,18 +180,9 @@ jobs:
           sudo mv protoc-gen-grpc-java-1.9.1-${OS}-x86_64.exe /usr/local/bin/protoc-gen-grpc-java
           export PATH="$PATH:/usr/local/bin"
 
-      - name:  Install Pre-requisites
-        run: |
-          cd $HOME
-          mkdir grpc
-          cd grpc
-          wget https://github.com/XVGuardian/grpc-compiled/releases/download/v1.61.0/local_directory.zip
-          unzip local_directory.zip
-          tree .local
-          export PATH="$HOME/grpc/.local/bin:$PATH"
-
       - name: Compile
         run: |
+          export PATH="$PATH:/usr/local/bin"
           python compile.py java
 
       - name: Tree
