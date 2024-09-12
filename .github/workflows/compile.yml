@@ -164,10 +164,11 @@ jobs:
           cd grpc-java-project
           mvn archetype:generate -DgroupId=com.example.grpc -DartifactId=grpc-java -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
 
-      - name: Add gRPC Java dependencies to Maven
+      - name: Correct the pom.xml structure
         run: |
           cd grpc-java-project
-          echo '<project xmlns="http://maven.apache.org/POM/4.0.0"' > pom.xml
+          echo '<?xml version="1.0" encoding="UTF-8"?>' > pom.xml
+          echo '<project xmlns="http://maven.apache.org/POM/4.0.0"' >> pom.xml
           echo '    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"' >> pom.xml
           echo '    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">' >> pom.xml
           echo '    <modelVersion>4.0.0</modelVersion>' >> pom.xml
@@ -197,11 +198,6 @@ jobs:
           echo '        </dependency>' >> pom.xml
           echo '    </dependencies>' >> pom.xml
           echo '</project>' >> pom.xml
-
-      - name: Setup python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
 
       - name: Install protoc
         run: |
