@@ -115,7 +115,7 @@ jobs:
           unzip protoc-25.3-linux-x86_64.zip -d $HOME/protoc
           export PATH="$HOME/protoc/bin:$PATH"
 
-     - name:  Install Pre-requisites
+      - name:  Install Pre-requisites
         run: |
           cd $HOME
           mkdir grpc
@@ -211,7 +211,7 @@ jobs:
           unzip protoc-25.3-linux-x86_64.zip -d $HOME/protoc
           export PATH="$HOME/protoc/bin:$PATH"
 
-     - name:  Install Pre-requisites
+      - name:  Install Pre-requisites
         run: |
           cd $HOME
           mkdir grpc
