@@ -173,27 +173,27 @@ jobs:
       - name: Add gRPC Java dependencies to the pom.xml
         run: |
           cd grpc-java-project
-          sed -i '/<\/dependencies>/ i \
-            <dependency>\n\
-              <groupId>io.grpc</groupId>\n\
-              <artifactId>grpc-netty-shaded</artifactId>\n\
-              <version>1.39.0</version>\n\
-            </dependency>\n\
-            <dependency>\n\
-              <groupId>io.grpc</groupId>\n\
-              <artifactId>grpc-protobuf</artifactId>\n\
-              <version>1.39.0</version>\n\
-            </dependency>\n\
-            <dependency>\n\
-              <groupId>io.grpc</groupId>\n\
-              <artifactId>grpc-stub</artifactId>\n\
-              <version>1.39.0</version>\n\
-            </dependency>\n\
-            <dependency>\n\
-              <groupId>com.google.protobuf</groupId>\n\
-              <artifactId>protobuf-java</artifactId>\n\
-              <version>3.15.8</version>\n\
-            </dependency>' pom.xml
+          sed -i '/<\/dependencies>/i \
+            \ \ \ \ <dependency>\n\
+            \ \ \ \ \ \ <groupId>io.grpc</groupId>\n\
+            \ \ \ \ \ \ <artifactId>grpc-netty-shaded</artifactId>\n\
+            \ \ \ \ \ \ <version>1.39.0</version>\n\
+            \ \ \ \ </dependency>\n\
+            \ \ \ \ <dependency>\n\
+            \ \ \ \ \ \ <groupId>io.grpc</groupId>\n\
+            \ \ \ \ \ \ <artifactId>grpc-protobuf</artifactId>\n\
+            \ \ \ \ \ \ <version>1.39.0</version>\n\
+            \ \ \ \ </dependency>\n\
+            \ \ \ \ <dependency>\n\
+            \ \ \ \ \ \ <groupId>io.grpc</groupId>\n\
+            \ \ \ \ \ \ <artifactId>grpc-stub</artifactId>\n\
+            \ \ \ \ \ \ <version>1.39.0</version>\n\
+            \ \ \ \ </dependency>\n\
+            \ \ \ \ <dependency>\n\
+            \ \ \ \ \ \ <groupId>com.google.protobuf</groupId>\n\
+            \ \ \ \ \ \ <artifactId>protobuf-java</artifactId>\n\
+            \ \ \ \ \ \ <version>3.15.8</version>\n\
+            \ \ \ \ </dependency>' pom.xml
 
       - name: Validate updated POM file
         run: |
