@@ -101,6 +101,11 @@ jobs:
         run: |
           composer require grpc/grpc
 
+      - name: Setup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
       - name: Install protoc
         run: |
           sudo apt-get update
@@ -180,6 +185,11 @@ jobs:
           echo '        </dependency>' >> pom.xml
           echo '    </dependencies>' >> pom.xml
           echo '</project>' >> pom.xml
+
+      - name: Setup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
 
       - name: Install protoc
         run: |
