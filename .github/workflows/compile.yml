@@ -55,6 +55,7 @@ jobs:
           curl -OL https://github.com/protocolbuffers/protobuf/releases/download/v25.3/protoc-25.3-linux-x86_64.zip
           unzip protoc-25.3-linux-x86_64.zip -d $HOME/protoc
           export PATH="$HOME/protoc/bin:$PATH"
+          
 
       - name: Install dependencies
         run: |
@@ -114,8 +115,19 @@ jobs:
           unzip protoc-25.3-linux-x86_64.zip -d $HOME/protoc
           export PATH="$HOME/protoc/bin:$PATH"
 
+     - name:  Install Pre-requisites
+        run: |
+          cd $HOME
+          mkdir grpc
+          cd grpc
+          wget https://github.com/XVGuardian/grpc-compiled/releases/download/v1.61.0/local_directory.zip
+          unzip local_directory.zip
+          tree .local
+          export PATH="$HOME/grpc/.local/bin:$PATH"
+
       - name: Compile
         run: |
+          export PATH="$HOME/grpc/.local/bin:$PATH"
           python compile.py php
 
       - name: Tree
@@ -199,8 +211,19 @@ jobs:
           unzip protoc-25.3-linux-x86_64.zip -d $HOME/protoc
           export PATH="$HOME/protoc/bin:$PATH"
 
+     - name:  Install Pre-requisites
+        run: |
+          cd $HOME
+          mkdir grpc
+          cd grpc
+          wget https://github.com/XVGuardian/grpc-compiled/releases/download/v1.61.0/local_directory.zip
+          unzip local_directory.zip
+          tree .local
+          export PATH="$HOME/grpc/.local/bin:$PATH"
+
       - name: Compile
         run: |
+          export PATH="$HOME/grpc/.local/bin:$PATH"
           python compile.py java
 
       - name: Tree
