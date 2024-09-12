@@ -165,40 +165,30 @@ jobs:
           cd grpc-java-project
           mvn archetype:generate -DgroupId=com.example.grpc -DartifactId=grpc-java -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
 
-      - name: Correct the pom.xml structure
+      - name: Add gRPC Java dependencies to the pom.xml
         run: |
           cd grpc-java-project
-          echo '<?xml version="1.0" encoding="UTF-8"?>' > pom.xml
-          echo '<project xmlns="http://maven.apache.org/POM/4.0.0"' >> pom.xml
-          echo '    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"' >> pom.xml
-          echo '    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">' >> pom.xml
-          echo '    <modelVersion>4.0.0</modelVersion>' >> pom.xml
-          echo '    <groupId>com.example.grpc</groupId>' >> pom.xml
-          echo '    <artifactId>grpc-java</artifactId>' >> pom.xml
-          echo '    <version>1.0-SNAPSHOT</version>' >> pom.xml
-          echo '    <dependencies>' >> pom.xml
-          echo '        <dependency>' >> pom.xml
-          echo '            <groupId>io.grpc</groupId>' >> pom.xml
-          echo '            <artifactId>grpc-netty-shaded</artifactId>' >> pom.xml
-          echo '            <version>1.39.0</version>' >> pom.xml
-          echo '        </dependency>' >> pom.xml
-          echo '        <dependency>' >> pom.xml
-          echo '            <groupId>io.grpc</groupId>' >> pom.xml
-          echo '            <artifactId>grpc-protobuf</artifactId>' >> pom.xml
-          echo '            <version>1.39.0</version>' >> pom.xml
-          echo '        </dependency>' >> pom.xml
-          echo '        <dependency>' >> pom.xml
-          echo '            <groupId>io.grpc</groupId>' >> pom.xml
-          echo '            <artifactId>grpc-stub</artifactId>' >> pom.xml
-          echo '            <version>1.39.0</version>' >> pom.xml
-          echo '        </dependency>' >> pom.xml
-          echo '        <dependency>' >> pom.xml
-          echo '            <groupId>com.google.protobuf</groupId>' >> pom.xml
-          echo '            <artifactId>protobuf-java</artifactId>' >> pom.xml
-          echo '            <version>3.15.8</version>' >> pom.xml
-          echo '        </dependency>' >> pom.xml
-          echo '    </dependencies>' >> pom.xml
-          echo '</project>' >> pom.xml
+          sed -i '/<dependencies>/a \
+            <dependency>\n\
+              <groupId>io.grpc</groupId>\n\
+              <artifactId>grpc-netty-shaded</artifactId>\n\
+              <version>1.39.0</version>\n\
+            </dependency>\n\
+            <dependency>\n\
+              <groupId>io.grpc</groupId>\n\
+              <artifactId>grpc-protobuf</artifactId>\n\
+              <version>1.39.0</version>\n\
+            </dependency>\n\
+            <dependency>\n\
+              <groupId>io.grpc</groupId>\n\
+              <artifactId>grpc-stub</artifactId>\n\
+              <version>1.39.0</version>\n\
+            </dependency>\n\
+            <dependency>\n\
+              <groupId>com.google.protobuf</groupId>\n\
+              <artifactId>protobuf-java</artifactId>\n\
+              <version>3.15.8</version>\n\
+            </dependency>' pom.xml
 
       - name: Install protoc
         run: |
