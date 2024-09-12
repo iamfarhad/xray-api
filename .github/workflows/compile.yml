@@ -169,7 +169,15 @@ jobs:
         run: |
           sudo apt install -y protobuf-compiler
 
-      - name: Install protoc
+      - name: Install protoc1
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y unzip
+          curl -OL https://github.com/protocolbuffers/protobuf/releases/download/v25.3/protoc-25.3-linux-x86_64.zip
+          unzip protoc-25.3-linux-x86_64.zip -d $HOME/protoc
+          export PATH="$HOME/protoc/bin:$PATH"
+
+      - name: Install protoc2
         run: |
           cd $HOME
           if [[ "$RUNNER_OS" == "Linux" ]]; then
